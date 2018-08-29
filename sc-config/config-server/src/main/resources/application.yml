@@ -5,8 +5,8 @@ spring:
     config:
       server:
         git:
-          uri:  https://github.com/forezp/SpringcloudConfig/
-          search-paths: respo
+          uri:  https://github.com/syth7758258/test/
+          search-paths: SpringCloudConfigTest
           username:
           password:
       label: master
