@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/config-client/config-client.iml" filepath="$PROJECT_DIR$/config-client/config-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/config-server/config-server.iml" filepath="$PROJECT_DIR$/config-server/config-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka-config/eureka-config.iml" filepath="$PROJECT_DIR$/eureka-config/eureka-config.iml" />
       <module fileurl="file://$PROJECT_DIR$/sc-config.iml" filepath="$PROJECT_DIR$/sc-config.iml" />
     </modules>
   </component>

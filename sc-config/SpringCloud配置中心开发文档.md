@@ -205,5 +205,55 @@ public class ConfigClientController {
 
 
 
+#利用服务中心来做负载均衡
+
+首先创建一个普通的springboot项目
+
+1.加入spring-cloud-starter-netflix-eureka-server引用
+
+2.配置启动类@EnableEurekaServer
+
+3.配置服务类的标记信息：
+spring.application.name=eureka-config
+server.port=8889
+eureka.client.service-url.defaultZone=http://${eureka.instance.hostname}:${server.port}/eureka/
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+eureka.instance.hostname=localhost
+
+
+4.修改config-server（配置服务端）
+    4.1：引用：spring-cloud-starter-netflix-eureka-client
+         启动类注入：@EnableEurekaClient表示服务提供商
+         配置信息中配置服务注册中心地址：
+         eureka:
+           client:
+             service-url:
+               defaultZone: http://localhost:8889/eureka
+               
+5.修改config-client(配置客户端)
+
+    1.注册到服务中心去：
+    
+            加入引用：spring-cloud-starter-netflix-eureka-client
+            启动类注入：@EnableEurekaClient表示服务提供商
+            修改配置文件信息
+            
+                这句话注释
+                #spring.cloud.config.uri= http://localhost:8888/
+                
+                下面是新增
+                eureka.client.service-url.defaultZone=http://localhost:8889/eureka/这一句表示服务中心地址
+                这一句表示true
+                spring.cloud.config.discovery.enabled=true
+                这一句表示服务id
+                spring.cloud.config.discovery.service-id=config-server
+                
+6.验证方式：
+
+        
+    访问使用的客户端的值是否注入进去即可
+
+
 
 

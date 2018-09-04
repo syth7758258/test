@@ -8,11 +8,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="config-client" />
         <module name="config-server" />
+        <module name="eureka-config" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="config-client" target="1.8" />
       <module name="config-server" target="1.8" />
+      <module name="eureeka-server" target="1.8" />
+      <module name="eureka-config" target="1.8" />
       <module name="sc-config" target="1.8" />
     </bytecodeTargetLevel>
   </component>
