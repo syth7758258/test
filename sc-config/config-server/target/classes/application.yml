@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          uri:  https://github.com/syth7758258/test/
+          uri:  https://github.com/syth7758258/config/
           search-paths: SpringCloudConfigTest
           username:
           password:
