@@ -62,7 +62,7 @@ pom文件中加入：
 	</dependencyManagement>
 ```
 
-###创建Config的服务端
+###创建Config的服务端（主要是用来更新gitHub上面的文件内容的）
 
 
 项目为：config-server
@@ -149,7 +149,7 @@ profiles
 
 
 
-###创建Config的客户端
+###创建Config的客户端（主要是用来使用configServer获取到的文件内容）
 
 
 首先这边肯定还是需要创建一个普通的springboot模块的项目
@@ -253,6 +253,117 @@ eureka.instance.hostname=localhost
 
         
     访问使用的客户端的值是否注入进去即可
+    
+    
+
+
+#加入消息总线（BUS）（主要是用来，通过发送消息来，自动同步配置上面的文件信息）
+
+这里面涉及到技术是
+
+**RabbitMq消息**
+
+***
+准备工作
+
+安装工作准备文档详情：https://www.cnblogs.com/junrong624/p/4121656.html
+
+
+1.首先从官网上面先下载RabbitMq消息的安装包
+    我们这里采用的是windwos版本的
+    http://www.rabbitmq.com/
+    下载的文件为：rabbitmq-server-3.7.7.exe
+    安装方法：一直下一步即可
+    
+    
+    
+2.安装rabbitMq需要erlang的支持
+    官网地址：http://www.erlang.org/download.html
+    下载的文件为：otp_win64_21.0.1.exe
+    安装方法：一直下一步即可
+
+
+3.安装完了以后，windows在启动栏目里面，点击启动栏里面的RabbitMq service - start进行启动
+
+4.启动完成以后，浏览器输入http://127.0.0.1:15672
+
+        登录账号密码默认都是guest
+        
+        
+        在admin选项卡里面，可以创建自己的用户和密码。
+        
+        然后记得分配权限，不然无法使用，set permission按钮
+5.到现在我们所有的安装工作都已经完成了
+
+
+***
+
+
+
+这个东西一般是在配置中心的客户端进行实现的
+
+以后我们这个配置中心的客户端如何使用呢。
+
+我们可以搭建一个配置中心的服务端来获取git上面的文件信息。
+
+然后在不同的微服务里面简历配置客户端，让他们用服务端得到的东西。
+
+这样子就会对于配置中心用起来了。
+
+那么更新了配置文件，如何让他们同时进行更新呢
+
+就是我们下面要用的BUS消息总线。
+
+
+*[改良config-client]
+    1.pom文件加入引用信息
+        ```
+        <!--加入消息队列-->
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+                </dependency>
+                <!--监控-->
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-actuator</artifactId>
+                </dependency>
+        ```
+        
+    2.启动类上面加入@EnableDiscoveryClient注解
+    
+    3.配置文件中加入条件信息
+    
+        这里是加入的rabbitmq相关的配置信息
+        spring.rabbitmq.addresses=127.0.0.1
+        spring.rabbitmq.port=5672
+        spring.rabbitmq.username=springcloud
+        spring.rabbitmq.password=springcloud
+        
+        #刷新时候，开启安全验证
+        spring.cloud.bus.enabled=true
+        #开启消息跟踪
+        spring.cloud.bus.trace.enabled=true
+        #
+        management.endpoints.web.exposure.include=
+     
+    4.启动即可
+  
+  如何测试呢
+  
+  
+    1.先访问使用客户端，获取git上面的文件进行展示
+    
+            例如：http://desktop-se7uhdf:8881/get
+            
+     2.用post方式访问：http://localhost:8881/actuator/bus-refresh
+     
+            进行文件刷新
+     前提是git文件已经更改
+     
+     
+     3.在访问  http://desktop-se7uhdf:8881/get查看效果
+      
 
 
 

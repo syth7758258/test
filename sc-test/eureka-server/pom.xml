@@ -16,9 +16,6 @@
 		<artifactId>sc-test</artifactId>
 		<version>1.0.0</version>
 	</parent>
-
-
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

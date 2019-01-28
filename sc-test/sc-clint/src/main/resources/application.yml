@@ -1,11 +1,13 @@
 server:
   port: 8752
-
+  address: 127.0.0.1
 spring:
   application:
     name: sc-clint
-
+#集群的时候需要配置两个服务中心地址，如果其中一个挂掉也不会影响使用
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://127.0.0.1:8761/eureka/,http://127.0.0.1:8751/eureka/
+      defaultZone: http://10.20.5.146:8761/eureka/,http://10.20.5.146:8751/eureka/
+  instance:
+    instance-id: ${server.address}:${server.port}

@@ -1,10 +1,12 @@
 server:
   port: 8761
-
+  address: 10.20.5.146
 eureka:
   instance:
   #设置服务地址
-    hostname: 127.0.0.1
+    hostname: ${server.address}
+    prefer-ip-address: true
+    instance-id: ${server.address}:${server.port}
   client:
   #设置不需要去检索服务（如果是集群，就需要修改为true）
     registerWithEureka: true
@@ -12,7 +14,7 @@ eureka:
     fetchRegistry: true
   #访问服务的url地址
     serviceUrl:
-      defaultZone: http://127.0.0.1:8751/eureka/
+      defaultZone: http://${server.address}:8751/eureka/
 #设置应用名称
 spring:
   application:

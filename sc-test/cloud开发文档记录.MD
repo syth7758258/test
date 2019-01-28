@@ -521,6 +521,24 @@ zuul:
             最后启动服务支持项目。就可以看到服务注册中心是集群化了。
             
             
+            
+   ##小技巧
+    为了方便查看注册中心的ip地址和服务提供者ip
+    在配置文件yml中
+    
+    1.先设置系统的server.address。记住，配置了地址，默认的127.0.0.1就失效了
+    
+    2.设置prefer-ip-address为true表示可以使用ip形式进行注册
+    
+    3.instance-id表示本服务的ip地址和端口
+    eureka:
+      instance:
+      #设置服务地址
+        hostname: ${server.address}
+        prefer-ip-address: true
+        instance-id: ${server.address}:${server.port}     
+            
+            
      
    
    
